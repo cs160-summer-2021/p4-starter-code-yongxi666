@@ -25,10 +25,10 @@
     paper.setup(canvas);
     var tool = new paper.Tool();
     var p1 = new paper.Path();
-    var uid = Date.now() % 10000;
-    p1.strokeColor = "red";
     var p2 = new paper.Path();
     var p3 = new paper.Path();
+    var uid = Date.now() % 10000;
+    p1.strokeColor = "red";
     p2.strokeColor = "black";
     p3.strokeColor = "blue";
     var dict = {};
@@ -37,7 +37,6 @@
 
     // getting the URL (you may want to use for Exercise 3)
     var url = window.location.href;
-
     var socket = new WebSocket(
         'ws://' + window.location.host + '/ws/draw');
 
@@ -47,17 +46,18 @@
             dict[uid] = pathdict[i];
             i = i + 1;
        }
-       socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + "}" );
+        socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + "}" );
     }
 
     socket.onmessage = function(receivedMessage) {
         var received = JSON.parse(receivedMessage.data);
         console.log("Received: " + JSON.stringify(received));
         // You will probably want to add some code here to draw more lines.
-        if (!(received.uid in dict)) {
+
+        if (!(received.uid in dict) && !url.includes("small")) {
             dict[received.uid] = pathdict[i];
             i = i + 1;
-       }
+        }
         console.log(JSON.stringify(url));
         dict[received.uid].add(new paper.Point(received.x, received.y));
     }
