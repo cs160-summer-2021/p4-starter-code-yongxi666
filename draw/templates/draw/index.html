@@ -12,54 +12,115 @@
 
     <style type="text/css">
     </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+</style>
 </head>
-<body>
-    <!-- You may change the dimensions of this canvas -->
-    <canvas id="myCanvas" width="750px" height="750px"></canvas>
+
+<body class="bo">
+    <form action="">
+    <h1>Meat:</h1>
+        <input type="checkbox" id="meat1" name="meat1" value="Chicken">
+        <label for="meat1">Chicken</label><br>
+        <input type="checkbox" id="meat2" name="meat2" value="Beef">
+        <label for="meat2">Beef</label><br>
+        <input type="checkbox" id="meat3" name="meat3" value="Pork">
+        <label for="meat3">Pork</label><br><br>
+    <h2>Vegetable:</h2>
+        <input type="checkbox" id="vege1" name="vege1" value="Broccoli">
+        <label for="vege1">Broccoli</label><br>
+        <input type="checkbox" id="vege2" name="vege2" value="Mushroom">
+        <label for="vege2">Mushroom</label><br>
+        <input type="checkbox" id="vege3" name="vege3" value="Bok_Choy">
+        <label for="vege3">Bok Choy</label><br><br>
+    <h3>Taste:</h3>
+        <input type="checkbox" id="Taste1" name="Taste1" value="Spicy">
+        <label for="Taste1">Spicy</label><br>
+        <input type="checkbox" id="Taste2" name="Taste2" value="Salty">
+        <label for="Taste2">Salty</label><br>
+        <input type="checkbox" id="Taste3" name="Taste3" value="Sweet">
+        <label for="Taste3">Sweet</label><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h4>Your Choices: </h4>
+    <div id = "Choices"></div>
+    <style>
+        .bo {
+            text-align: center;
+        }
+        #Choices {
+            margin-left: 30%;
+            margin-right: 30%;
+        }
+    </style>
 </body>
 <script>
 
     // setting up the canvas and one paper tool
-    var canvas = document.getElementById('myCanvas');
-    paper.setup(canvas);
-    var tool = new paper.Tool();
-    var p1 = new paper.Path();
-    var p2 = new paper.Path();
-    var p3 = new paper.Path();
     var uid = Date.now() % 10000;
-    p1.strokeColor = "red";
-    p2.strokeColor = "black";
-    p3.strokeColor = "blue";
-    var dict = {};
-    var pathdict = {0:p1, 1:p2, 2:p3};
-    i = 0
-
+    var largeDict = {};
     // getting the URL (you may want to use for Exercise 3)
     var url = window.location.href;
+    console.log(url);
     var socket = new WebSocket(
         'ws://' + window.location.host + '/ws/draw');
-
-    tool.onMouseMove = function(event) { //http://paperjs.org/reference/tool/ path examples
-       // You may need to add code here if you want to pass any other information.
-       if (!(uid in dict)) {
-            dict[uid] = pathdict[i];
-            i = i + 1;
-       }
-        socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + "}" );
+    if (url.includes("Chicken")) {
+        document.getElementById('Choices').textContent += "Chicken; ";
     }
-
+    if (url.includes("Beef")) {
+        document.getElementById('Choices').textContent += "Beef; ";
+    }
+    if (url.includes("Pork")) {
+        document.getElementById('Choices').textContent += "Pork; ";
+    }
+    if (url.includes("Broccoli")) {
+        document.getElementById('Choices').textContent += "Broccoli; ";
+    }
+    if (url.includes("Bok_Choy")) {
+        document.getElementById('Choices').textContent += "Bok Choy; ";
+    }
+    if (url.includes("Mushroom")) {
+        document.getElementById('Choices').textContent += "Mushroom; ";
+    }
+    if (url.includes("Spicy")) {
+        document.getElementById('Choices').textContent += "Spicy; ";
+    }
+    if (url.includes("Salty")) {
+        document.getElementById('Choices').textContent += "Salty; ";
+    }
+    if (url.includes("Sweet")) {
+        document.getElementById('Choices').textContent += "Sweet; ";
+    }
+    socket.send("{\"uurl\" : " + url + ", \"uid\" : " + uid + "}" );
     socket.onmessage = function(receivedMessage) {
         var received = JSON.parse(receivedMessage.data);
         console.log("Received: " + JSON.stringify(received));
-        // You will probably want to add some code here to draw more lines.
-
-        if (!(received.uid in dict) && !url.includes("small")) {
-            dict[received.uid] = pathdict[i];
-            i = i + 1;
+        //received.uurl will include names of ingredients that user chose
+        //add to largeDict if the ingredient is not in the dict, show ingredients that all users chose, seperately maybe.
+        if (url.includes("large")) {
+            
         }
         console.log(JSON.stringify(url));
-        dict[received.uid].add(new paper.Point(received.x, received.y));
     }
 
     socket.onclose = function(e) {
