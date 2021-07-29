@@ -95,10 +95,13 @@
     socket.onmessage = function(receivedMessage) {
         data = JSON.parse(receivedMessage.data);
         url = data.url;
-        if (!dict[data.uid]) {
-            dict[data.uid] = i;
-            i = i + 1;
-        }
+        console.log(url.length);
+        
+        if (url.length > 33) {
+            if (!dict[data.uid]) {
+                dict[data.uid] = i;
+                i = i + 1;
+            }
         document.getElementById('Choices').innerText += "Customer " + dict[data.uid] + ":" + "\n";
         if (url.includes("Chicken")) {
             document.getElementById('Choices').innerText += "Chicken; ";
@@ -128,6 +131,9 @@
             document.getElementById('Choices').innerText += "Sweet; ";
         }
         document.getElementById('Choices').innerText += "\n";
+        }
+        
+        
         // document.getElementById('Choices').inn;
         
         
