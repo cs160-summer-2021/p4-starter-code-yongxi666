@@ -1,4 +1,4 @@
-<!-- {% load static %}
+{% load static %}
 
 <!DOCTYPE html>
 <html>
@@ -61,7 +61,7 @@
         <label for="Taste3">Sweet</label><br><br>
         <input type="submit" value="Submit">
     </form>
-
+    
     <h4>Your Choices: </h4>
     <div id = "Choices"></div>
     <style>
@@ -79,6 +79,10 @@
     // setting up the canvas and one paper tool
     var uid = Date.now() % 10000;
     var largeDict = {};
+    var p1 = "user 1";
+    var p2 = "user 2";
+    var p3 = "user 3";
+    var userDict = {0:p1, 1:p2, 2:p3};
     i = 0;
     // getting the URL (you may want to use for Exercise 3)
     var url = window.location.href;
@@ -112,24 +116,30 @@
     if (url.includes("Sweet")) {
         document.getElementById('Choices').textContent += "Sweet; ";
     }
-    largeDict[i] = document.getElementById('Choices');
-    i = i + 1;
-    socket.send("{\"uurl\" : " + url + ", \"uid\" : " + uid + "}" );
+    if (!(uid in largeDict)) {
+        largeDict[uid] = userDict[i];
+        i = i + 1;
+    }
+    // socket.onopen = () => socket.send("Hello World");
+    socket.onopen = () =>socket.send(JSON.stringify({
+        url: url,
+        uid: uid,
+    }))
+    // socket.onopen = () => socket.send("{\"uurl\" : " + url + ", \"uid\" : " + uid + "}" );
+    // console.log(uid);
     socket.onmessage = function(receivedMessage) {
-        var received = JSON.parse(receivedMessage.data);
-        console.log("Received: " + JSON.stringify(received));
+        console.log(receivedMessage);
+        // var received = JSON.parse(receivedMessage.data);
+        console.log("Received: " + JSON.stringify(receivedMessage));
         //received.uurl will include names of ingredients that user chose
         //add to largeDict if the ingredient is not in the dict, show ingredients that all users chose, seperately maybe.
-        if (url.includes("large")) {
-            largeDict
-            
-        }
+
         console.log(JSON.stringify(url));
     }
 
-    socket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
+    // socket.onclose = function(e) {
+    //     console.error('Chat socket closed unexpectedly');
+    // };
 
 </script>
-</html> -->
+</html>
