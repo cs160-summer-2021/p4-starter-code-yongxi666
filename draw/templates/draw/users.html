@@ -7,6 +7,7 @@
     <title>P4 Drawing</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
 
@@ -37,37 +38,73 @@
 </head>
 
 <body class="bo">
-    <form action="">
-    <h1>Meat:</h1>
-        <input type="checkbox" id="meat1" name="meat1" value="Chicken">
-        <label for="meat1">Chicken</label><br>
-        <input type="checkbox" id="meat2" name="meat2" value="Beef">
-        <label for="meat2">Beef</label><br>
-        <input type="checkbox" id="meat3" name="meat3" value="Pork">
-        <label for="meat3">Pork</label><br><br>
-    <h2>Vegetable:</h2>
-        <input type="checkbox" id="vege1" name="vege1" value="Broccoli">
-        <label for="vege1">Broccoli</label><br>
-        <input type="checkbox" id="vege2" name="vege2" value="Mushroom">
-        <label for="vege2">Mushroom</label><br>
-        <input type="checkbox" id="vege3" name="vege3" value="Bok_Choy">
-        <label for="vege3">Bok Choy</label><br><br>
-    <h3>Taste:</h3>
-        <input type="checkbox" id="Taste1" name="Taste1" value="Spicy">
-        <label for="Taste1">Spicy</label><br>
-        <input type="checkbox" id="Taste2" name="Taste2" value="Salty">
-        <label for="Taste2">Salty</label><br>
-        <input type="checkbox" id="Taste3" name="Taste3" value="Sweet">
-        <label for="Taste3">Sweet</label><br><br>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="phoneContainer">
+        <form class="formContainer">
+        <p class="title">Meat:<p>
+            <input type="checkbox" id="meat1" name="meat1" value="Chicken">
+            <label for="meat1">Chicken</label><br>
+            <input type="checkbox" id="meat2" name="meat2" value="Beef">
+            <label for="meat2">Beef</label><br>
+            <input type="checkbox" id="meat3" name="meat3" value="Ham">
+            <label for="meat3">Ham</label><br>
+            <input type="checkbox" id="meat4" name="meat4" value="Sausage">
+            <label for="meat4">Sausage</label><br><br>
+        <p class="title">Vegetable:</p>
+            <input type="checkbox" id="vege1" name="vege1" value="Broccoli">
+            <label for="vege1">Broccoli</label><br>
+            <input type="checkbox" id="vege2" name="vege2" value="Mushroom">
+            <label for="vege2">Mushroom</label><br>
+            <input type="checkbox" id="vege3" name="vege3" value="Bok_Choy">
+            <label for="vege3">Bok Choy</label><br>
+            <input type="checkbox" id="vege4" name="vege4" value="Spinach">
+            <label for="vege4">Bok Choy</label><br><br>
+        <p class="title">Taste:</p>
+            <input type="checkbox" id="Taste1" name="Taste1" value="Spicy">
+            <label for="Taste1">Spicy</label><br>
+            <input type="checkbox" id="Taste2" name="Taste2" value="Salty">
+            <label for="Taste2">Salty</label><br>
+            <input type="checkbox" id="Taste3" name="Taste3" value="Sweet">
+            <label for="Taste3">Sweet</label><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <p class="title">Your Choices: </p>
+        <div id = "Choices"></div>
+    </div>
     
-    <h4>Your Choices: </h4>
-    <div id = "Choices"></div>
+    
     <style>
+        .phoneContainer {
+            background-color: #EFDCBE;
+            width: 428px;
+            height: 926px;
+            border-radius: 40px;
+            border: 1px solid #05FFC5;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .formContainer {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-family: Montserrat;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 36px;
+            line-height: 44px;
+            text-align: center;
+            letter-spacing: 0.005em;
+            color: black;
+        }
+
         .bo {
             text-align: center;
         }
+        
         #Choices {
             margin-left: 30%;   
             margin-right: 30%;
@@ -125,15 +162,9 @@
         url: url,
         uid: uid,
     }))
-    // socket.onopen = () => socket.send("{\"uurl\" : " + url + ", \"uid\" : " + uid + "}" );
-    // console.log(uid);
     socket.onmessage = function(receivedMessage) {
         console.log(receivedMessage);
-        // var received = JSON.parse(receivedMessage.data);
         console.log("Received: " + JSON.stringify(receivedMessage));
-        //received.uurl will include names of ingredients that user chose
-        //add to largeDict if the ingredient is not in the dict, show ingredients that all users chose, seperately maybe.
-
         console.log(JSON.stringify(url));
     }
 

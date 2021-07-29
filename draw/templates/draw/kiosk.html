@@ -7,6 +7,7 @@
     <title>P4 Drawing</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
 
@@ -37,16 +38,43 @@
 </head>
 
 <body class="bo">
-    <form action="">
-    <h4>Party Choices: </h4>
-    <div id = "Choices"></div>
+    <div class="phoneContainer">
+        <p class="title">Party Choices: </p>
+        <div id = "Choices">
+        </div>
+        
+    </div>
     <style>
+        .phoneContainer {
+            background-color: #EFDCBE;
+            width: 428px;
+            height: 926px;
+            border-radius: 40px;
+            border: 1px solid #05FFC5;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .title {
+            margin-top: 40px;
+            font-family: Montserrat;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 36px;
+            line-height: 44px;
+            text-align: center;
+            letter-spacing: 0.005em;
+
+            color: black;
+        }
         .bo {
             text-align: center;
         }
         #Choices {
-            margin-left: 30%;   
-            margin-right: 30%;
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-bottom: 20px;
         }
     </style>
 </body>
@@ -54,7 +82,7 @@
 
     // setting up the canvas and one paper tool
     var uid = Date.now() % 10000;
-    var largeDict = {};
+    var dict = {};
     i = 0;
     // getting the URL (you may want to use for Exercise 3)
     var url = window.location.href;
@@ -63,46 +91,50 @@
         'ws://' + window.location.host + '/ws/draw');
     var urlOfUsers;
     var data;
+
     socket.onmessage = function(receivedMessage) {
         data = JSON.parse(receivedMessage.data);
         url = data.url;
-        console.log("data parsed:", data);
-
-        console.log("data url:", data.url);
-        console.log("url:", urlOfUsers)
-        console.log(receivedMessage);
-        console.log("Received: " + JSON.stringify(receivedMessage));
-        console.log(JSON.stringify(url));
-        document.getElementById('Choices').textContent += "\n" + "\n Player " + data.uid + ": ";
+        if (!dict[data.uid]) {
+            dict[data.uid] = i;
+            i = i + 1;
+        }
+        document.getElementById('Choices').innerText += "Customer " + dict[data.uid] + ":" + "\n";
         if (url.includes("Chicken")) {
-            document.getElementById('Choices').textContent += "Chicken; ";
+            document.getElementById('Choices').innerText += "Chicken; ";
         }
         if (url.includes("Beef")) {
-            document.getElementById('Choices').textContent += "Beef; ";
+            document.getElementById('Choices').innerText += "Beef; ";
         }
         if (url.includes("Pork")) {
-            document.getElementById('Choices').textContent += "Pork; ";
+            document.getElementById('Choices').innerText += "Pork; ";
         }
         if (url.includes("Broccoli")) {
-            document.getElementById('Choices').textContent += "Broccoli; ";
+            document.getElementById('Choices').innerText += "Broccoli; ";
         }
         if (url.includes("Bok_Choy")) {
-            document.getElementById('Choices').textContent += "Bok Choy; ";
+            document.getElementById('Choices').innerText += "Bok Choy; ";
         }
         if (url.includes("Mushroom")) {
-            document.getElementById('Choices').textContent += "Mushroom; ";
+            document.getElementById('Choices').innerText += "Mushroom; ";
         }
         if (url.includes("Spicy")) {
-            document.getElementById('Choices').textContent += "Spicy; ";
+            document.getElementById('Choices').innerText += "Spicy; ";
         }
         if (url.includes("Salty")) {
-            document.getElementById('Choices').textContent += "Salty; ";
+            document.getElementById('Choices').innerText += "Salty; ";
         }
         if (url.includes("Sweet")) {
-            document.getElementById('Choices').textContent += "Sweet; ";
+            document.getElementById('Choices').innerText += "Sweet; ";
         }
+        document.getElementById('Choices').innerText += "\n";
+        // document.getElementById('Choices').inn;
+        
+        
         // document.getElementById('Choices').textContent += "\n";
     }
+    // document.getElementById('Choices').textContent += "\n ";
+    
 
 
     // // setting up the canvas and one paper tool
